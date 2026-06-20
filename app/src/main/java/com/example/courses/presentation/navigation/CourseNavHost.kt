@@ -14,7 +14,7 @@ fun CalendarNavHost() {
 
     NavHost(
         navController = navController,
-        startDestination = Screen.Home.route
+        startDestination = Screen.Auth.route
     ) {
         composable(Screen.Auth.route) {
             LoginScreen(
