@@ -1,20 +1,36 @@
 package com.example.courses.presentation.screens
 
 import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.courses.presentation.viewmodel.LoginViewModel
@@ -32,7 +48,7 @@ fun LoginScreen(
 
     LaunchedEffect(Unit) {
         viewModel.openBrowserEvent.collect { url ->
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            val intent = Intent(Intent.ACTION_VIEW, url.toUri())
             context.startActivity(intent)
         }
     }
@@ -40,61 +56,97 @@ fun LoginScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF1E1E1E))
+            .background(Color(0xFF151515))
             .padding(horizontal = 24.dp)
     ) {
-        Spacer(modifier = Modifier.height(80.dp))
+        Spacer(modifier = Modifier.height(120.dp))
 
         Text(
             text = "Вход",
             color = Color.White,
-            fontSize = 32.sp,
-            fontWeight = FontWeight.Bold
+            fontSize = 28.sp,
+            lineHeight = 36.sp
         )
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        Text(text = "Email", color = Color(0xFF8E8E93), fontSize = 14.sp)
+        Text(
+            text = "Email",
+            color = Color(0xFFF2F2F3),
+            fontSize = 16.sp,
+            lineHeight = 18.sp,
+            letterSpacing = 0.15.sp
+        )
+
         Spacer(modifier = Modifier.height(8.dp))
-        TextField(
+
+        BasicTextField(
             value = email,
             onValueChange = { viewModel.onEmailChanged(it) },
-            placeholder = { Text("example@gmail.com", color = Color(0xFF48484A)) },
-            shape = CircleShape,
+            textStyle = TextStyle(color = Color.White, fontSize = 16.sp),
             singleLine = true,
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color(0xFF2C2C2E),
-                unfocusedContainerColor = Color(0xFF2C2C2E),
-                disabledContainerColor = Color(0xFF2C2C2E),
-                focusedTextColor = Color.White,
-                unfocusedTextColor = Color.White,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
-            ),
-            modifier = Modifier.fillMaxWidth()
+            cursorBrush = SolidColor(Color.White),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(40.dp)
+                .background(Color(0xFF32333A), CircleShape)
+                .padding(horizontal = 16.dp),
+            decorationBox = { innerTextField ->
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.CenterStart
+                ) {
+                    if (email.isEmpty()) {
+                        Text(
+                            text = "example@gmail.com",
+                            color = Color(0xFF6E6E72),
+                            fontSize = 16.sp
+                        )
+                    }
+                    innerTextField()
+                }
+            }
         )
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        Text(text = "Пароль", color = Color(0xFF8E8E93), fontSize = 14.sp)
+        Text(
+            text = "Пароль",
+            color = Color(0xFFF2F2F3),
+            fontSize = 16.sp,
+            lineHeight = 18.sp,
+            letterSpacing = 0.15.sp
+        )
+
         Spacer(modifier = Modifier.height(8.dp))
-        TextField(
+
+        BasicTextField(
             value = password,
             onValueChange = { viewModel.onPasswordChanged(it) },
-            placeholder = { Text("Введите пароль", color = Color(0xFF48484A)) },
-            shape = CircleShape,
+            textStyle = TextStyle(color = Color.White, fontSize = 16.sp),
             singleLine = true,
             visualTransformation = PasswordVisualTransformation(),
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color(0xFF2C2C2E),
-                unfocusedContainerColor = Color(0xFF2C2C2E),
-                disabledContainerColor = Color(0xFF2C2C2E),
-                focusedTextColor = Color.White,
-                unfocusedTextColor = Color.White,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
-            ),
-            modifier = Modifier.fillMaxWidth()
+            cursorBrush = SolidColor(Color.White),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(40.dp)
+                .background(Color(0xFF32333A), CircleShape)
+                .padding(horizontal = 16.dp),
+            decorationBox = { innerTextField ->
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.CenterStart
+                ) {
+                    if (password.isEmpty()) {
+                        Text(
+                            text = "Введите пароль",
+                            color = Color(0xFF6E6E72),
+                            fontSize = 16.sp
+                        )
+                    }
+                    innerTextField()
+                }
+            }
         )
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -105,15 +157,15 @@ fun LoginScreen(
             shape = CircleShape,
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFF00C756),
-                disabledContainerColor = Color(0xFF2C2C2E)
+                disabledContainerColor = Color(0xFF00C756)
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .height(54.dp)
+                .height(40.dp)
         ) {
             Text(
                 text = "Вход",
-                color = if (isButtonEnabled) Color.White else Color(0xFF48484A),
+                color = Color(0xFFF2F2F3),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold
             )
@@ -126,23 +178,44 @@ fun LoginScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row {
-                Text(text = "Нет аккаунта? ", color = Color.White, fontSize = 14.sp)
-                Text(text = "Регистрация", color = Color(0xFF00C756), fontSize = 14.sp)
+                Text(
+                    text = "Нет аккаунта? ",
+                    color = Color(0xFFF2F2F3),
+                    fontSize = 12.sp,
+                    lineHeight = 15.sp,
+                    letterSpacing = 0.4.sp
+                )
+
+                Text(
+                    text = "Регистрация",
+                    color = Color(0xFF12B956),
+                    fontSize = 12.sp,
+                    lineHeight = 15.sp,
+                    letterSpacing = 0.4.sp
+                )
             }
+
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "Забыл пароль", color = Color(0xFF00C756), fontSize = 14.sp)
+
+            Text(
+                text = "Забыл пароль",
+                color = Color(0xFF12B956),
+                fontSize = 12.sp,
+                lineHeight = 15.sp,
+                letterSpacing = 0.4.sp
+            )
         }
 
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.height(28.dp))
 
         HorizontalDivider(color = Color(0xFF2C2C2E), thickness = 1.dp)
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 32.dp),
+                .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Button(
@@ -151,7 +224,7 @@ fun LoginScreen(
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2D81E0)),
                 modifier = Modifier
                     .weight(1f)
-                    .height(54.dp)
+                    .height(40.dp)
             ) {
                 Text(text = "ВК", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
             }
@@ -162,7 +235,7 @@ fun LoginScreen(
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFF57C00)),
                 modifier = Modifier
                     .weight(1f)
-                    .height(54.dp)
+                    .height(40.dp)
             ) {
                 Text(text = "ОК", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
             }

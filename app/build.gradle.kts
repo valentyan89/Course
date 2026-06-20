@@ -7,11 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.courses"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.courses"
@@ -59,7 +55,7 @@ dependencies {
 
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
 
-    val room_version = "2.7.0-alpha01"
+    val room_version = "2.7.0"
     ksp("androidx.room:room-compiler:$room_version")
     implementation("androidx.room:room-runtime:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
@@ -76,7 +72,6 @@ dependencies {
 
     implementation("androidx.compose.material3:material3:1.4.0")
     implementation("androidx.compose.material3:material3-window-size-class:1.4.0")
-    implementation("androidx.compose.material3:material3-adaptive-navigation-suite:1.5.0-alpha22")
 
     implementation("androidx.compose.material:material-icons-extended")
 }

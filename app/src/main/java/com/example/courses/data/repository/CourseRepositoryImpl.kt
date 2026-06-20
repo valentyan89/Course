@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 
 
@@ -18,19 +19,8 @@ class CourseRepositoryImpl @Inject constructor(
     private val courseDao: CourseDao,
     private val courseApi: CourseApi
 ) : CourseRepository {
-    private val _remoteCourses = MutableStateFlow<List<CourseDto>>(emptyList())
-
-    override fun getCourses(): Flow<List<Course>> {
-        val favouritesIds = courseDao.getFavouritesIds()
-        return combine(
-            favouritesIds,
-            _remoteCourses
-        ) { favouriteId, remoteList ->
-            remoteList.map { courseDto ->
-                val isFavouriteId = favouriteId.contains(courseDto.id)
-                courseDto.toDomain(isFavouriteId)
-            }
-        }
+     override suspend fun getCourses(): List<Course> {
+        return courseApi.getCourses().courses.map { it.toDomain(false) }
     }
 
     override fun getFavouriteCourses(): Flow<List<Course>> {
@@ -47,8 +37,7 @@ class CourseRepositoryImpl @Inject constructor(
         courseDao.deleteCourse(course.toEntity())
     }
 
-    override suspend fun refreshCourses() {
-        val coursesResponse = courseApi.getCourses()
-        _remoteCourses.value = coursesResponse.courses
+    override fun getIds(): Flow<List<Int>> {
+        return courseDao.getFavouritesIds()
     }
 }

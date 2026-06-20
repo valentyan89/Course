@@ -5,14 +5,13 @@ import com.example.courses.domain.usecase.AddToFavouriteUseCase
 import com.example.courses.domain.usecase.DeleteFromFavouriteUseCase
 import com.example.courses.domain.usecase.GetCoursesUseCase
 import com.example.courses.domain.usecase.GetFavouriteCoursesUseCase
-import com.example.courses.domain.usecase.RefreshCoursesUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import dagger.hilt.android.components.ViewModelComponent
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewModelComponent::class)
 object UseCaseModule {
     @Provides
     fun provideAddToFavouriteUseCase(repository: CourseRepositoryImpl): AddToFavouriteUseCase =
@@ -29,8 +28,4 @@ object UseCaseModule {
     @Provides
     fun provideGetFavouriteCoursesUseCase(repository: CourseRepositoryImpl): GetFavouriteCoursesUseCase =
         GetFavouriteCoursesUseCase(repository)
-
-    @Provides
-    fun provideRefreshCoursesUseCase(repository: CourseRepositoryImpl): RefreshCoursesUseCase =
-        RefreshCoursesUseCase(repository)
 }

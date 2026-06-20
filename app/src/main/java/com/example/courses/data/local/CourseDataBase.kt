@@ -7,9 +7,9 @@ import com.example.courses.data.local.entity.CourseEntity
 
 @Database(
     entities = [CourseEntity::class],
-    version = 2,
-    exportSchema = true
+    version = 1,
+    exportSchema = false
 )
 abstract class CourseDataBase : RoomDatabase() {
-    abstract fun courseDatabase(): CourseDao
+    abstract fun courseDao(): CourseDao
 }

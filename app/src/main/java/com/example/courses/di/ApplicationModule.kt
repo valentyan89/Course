@@ -24,5 +24,5 @@ object ApplicationModule {
             .build()
 
     @Provides
-    fun provideCourseDao(db: CourseDataBase) = db.courseDatabase()
+    fun provideCourseDao(db: CourseDataBase) = db.courseDao()
 }

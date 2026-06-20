@@ -5,8 +5,20 @@ import com.example.courses.data.model.CourseDto
 import com.example.courses.domain.model.Course
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 private val jsonDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+
+private val uiDateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy", Locale("ru"))
+
+private fun formatToUiDate(rawDate: String): String {
+    val date = LocalDate.parse(rawDate, jsonDateFormatter)
+    val parts = date.format(uiDateFormatter).split(" ")
+
+    val capitalizedMonth = parts[1].replaceFirstChar { it.titlecase(Locale("ru")) }
+
+    return "${parts[0]} $capitalizedMonth ${parts[2]}"
+}
 
 fun CourseDto.toDomain(isFavourite: Boolean) : Course {
     val parsedDate = LocalDate.parse(this.publishDate, jsonDateFormatter)
@@ -17,7 +29,7 @@ fun CourseDto.toDomain(isFavourite: Boolean) : Course {
         text = this.text,
         price = this.price.replace(" ", "").toInt(),
         rate = this.rate.toDouble(),
-        startDate = this.startDate,
+        startDate = formatToUiDate(this.startDate),
         hasLike = isFavourite,
         publishDate = parsedDate
     )
@@ -32,7 +44,7 @@ fun CourseEntity.toDomain(): Course {
         text = this.text,
         price = this.price,
         rate = this.rate,
-        startDate = this.startDate,
+        startDate = formatToUiDate(this.startDate),
         hasLike = true,
         publishDate = parsedDate
     )

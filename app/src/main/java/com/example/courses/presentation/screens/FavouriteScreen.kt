@@ -11,58 +11,60 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import com.example.courses.presentation.common.CourseCard
+import com.example.courses.presentation.common.CoursesBottomBar
 import com.example.courses.presentation.viewmodel.CoursesViewModel
 
 @Composable
 fun FavoriteScreen(
-    viewModel: CoursesViewModel = hiltViewModel(),
-    modifier: Modifier = Modifier
+    navController: NavController,
+    viewModel: CoursesViewModel = hiltViewModel()
 ) {
     val favoriteCourses by viewModel.favoriteCoursesState.collectAsStateWithLifecycle()
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(Color(0xFF121212))
-            .padding(horizontal = 16.dp)
-    ) {
-
-        Spacer(modifier = Modifier.height(50.dp))
-
-
-        Text(
-            text = "Избранное",
-            color = Color.White,
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(vertical = 8.dp)
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-
-        LazyColumn(
-            modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(20.dp),
-
-            contentPadding = PaddingValues(bottom = 24.dp)
+    Scaffold(
+        bottomBar = { CoursesBottomBar(navController = navController) }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(0xFF121212))
+                .padding(paddingValues)
+                .padding(horizontal = 16.dp)
         ) {
-            items(favoriteCourses, key = { it.id }) { course ->
-                CourseCard(
-                    course = course,
-                    onLikeClick = { viewModel.toggleLike(course) }
-                )
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = "Избранное",
+                color = Color.White,
+                fontSize = 28.sp,
+                modifier = Modifier.padding(vertical = 16.dp)
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            LazyColumn(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                contentPadding = PaddingValues(bottom = 16.dp)
+            ) {
+                items(favoriteCourses, key = { it.id }) { course ->
+                    CourseCard(
+                        course = course,
+                        onLikeClick = { viewModel.toggleLike(course) }
+                    )
+                }
             }
         }
     }
