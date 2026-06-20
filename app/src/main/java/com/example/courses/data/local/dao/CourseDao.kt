@@ -18,4 +18,7 @@ interface CourseDao {
 
     @Delete
     suspend fun deleteCourse(course: CourseEntity)
+
+    @Query("SELECT id FROM favouriteCourses")
+    fun getFavouritesIds(): Flow<List<Int>>
 }

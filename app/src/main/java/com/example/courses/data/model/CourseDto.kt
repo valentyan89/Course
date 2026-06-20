@@ -1,15 +1,14 @@
 package com.example.courses.data.model
 
-import kotlinx.serialization.Serializable
+import com.google.gson.annotations.SerializedName
 
-@Serializable
 data class CourseDto(
-    val id: Int,
-    val title: String,
-    val text: String,
-    val price: String,
-    val rate: String,
-    val startDate: String,
-    val hasLike: Boolean,
-    val publishDate: String
+    @SerializedName("id") val id: Int,
+    @SerializedName("title") val title: String,
+    @SerializedName("text") val text: String,
+    @SerializedName("price") val price: String,
+    @SerializedName("rate") val rate: String,
+    @SerializedName("startDate") val startDate: String,
+    @SerializedName("hasLike") val hasLike: Boolean,
+    @SerializedName("publishDate") val publishDate: String
 )
